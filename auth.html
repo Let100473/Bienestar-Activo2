@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienestar Laboral NOM-035 - Autenticación</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos del encabezado */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Estilos del formulario de autenticación */
+        .auth-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            transition: background-color 0.3s;
+        }
+
+        .auth-tab.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .error-message {
+            color: #ff3333;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container">
+            <h1>Bienestar Laboral NOM-035</h1>
+            <p>Cuida tu salud y bienestar en el trabajo</p>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <div class="auth-container">
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="login-tab">Iniciar Sesión</div>
+                <div class="auth-tab" id="register-tab">Registrarse</div>
+            </div>
+            
+            <!-- Formulario de inicio de sesión -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-email">Correo electrónico</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn">Iniciar Sesión</button>
+                </div>
+                <div id="login-error" class="error-message"></div>
+            </form>
+            
+            <!-- Formulario de registro -->
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="register-name">Nombre completo</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Correo electrónico</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Contraseña</label>
+                    <input type="password" id="register-password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="register-password-confirm">Confirmar contraseña</label>
+                    <input type="password" id="register-password-confirm" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn">Registrarse</button>
+                </div>
+                <div id="register-error" class="error-message"></div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bienestar Laboral NOM-035. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCd7FR-qaW7WleFP1kF2rQGYk9qvON51Ss",
+            authDomain: "bienestar-activo-69187.firebaseapp.com",
+            projectId: "bienestar-activo-69187",
+            storageBucket: "bienestar-activo-69187.firebasestorage.app",
+            messagingSenderId: "171149238020",
+            appId: "1:171149238020:web:33b5225103677c55203a51"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Verificar estado de autenticación
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuario autenticado, redirigir al index
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Alternar entre tabs de inicio de sesión y registro
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+        });
+
+        // Funcionalidad de inicio de sesión
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorMessage = document.getElementById('login-error');
+            
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                // Redirigir a la página principal después de inicio de sesión exitoso
+                window.location.href = 'index.html';
+            } catch (error) {
+                errorMessage.style.display = 'block';
+                
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        errorMessage.textContent = 'El correo electrónico no es válido.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage.textContent = 'Esta cuenta ha sido deshabilitada.';
+                        break;
+                    case 'auth/user-not-found':
+                        errorMessage.textContent = 'No existe una cuenta con este correo electrónico.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage.textContent = 'Contraseña incorrecta.';
+                        break;
+                    default:
+                        errorMessage.textContent = 'Error al iniciar sesión: ' + error.message;
+                }
+            }
+        });
+
+        // Funcionalidad de registro
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const passwordConfirm = document.getElementById('register-password-confirm').value;
+            const errorMessage = document.getElementById('register-error');
+            
+            // Validar que las contraseñas coincidan
+            if (password !== passwordConfirm) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Las contraseñas no coinciden.';
+                return;
+            }
+            
+            try {
+                // Crear nuevo usuario
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // Guardar información adicional en Firestore
+                await setDoc(doc(db, "usuarios", user.uid), {
+                    nombre: name,
+                    email: email,
+                    fechaRegistro: new Date()
+                });
+                
+                // Redirigir a la página principal después de registro exitoso
+                window.location.href = 'index.html';
+            } catch (error) {
+                errorMessage.style.display = 'block';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage.textContent = 'Ya existe una cuenta con este correo electrónico.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage.textContent = 'El correo electrónico no es válido.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage.textContent = 'La contraseña es demasiado débil. Debe tener al menos 6 caracteres.';
+                        break;
+                    default:
+                        errorMessage.textContent = 'Error al registrarse: ' + error.message;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
