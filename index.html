@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienestar Laboral NOM-035 - Inicio</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos del encabezado */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            margin-right: 15px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: white;
+            color: #4CAF50;
+        }
+
+        /* Estilos de la navegación */
+        nav {
+            background-color: #333;
+            margin-bottom: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            overflow-x: auto;
+        }
+
+        .nav-links li {
+            flex: 0 0 auto;
+        }
+
+        .nav-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 1rem;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #4CAF50;
+        }
+
+        .nav-links i {
+            margin-right: 8px;
+        }
+
+        /* Estilos del contenido principal */
+        .welcome-section {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .welcome-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #4CAF50;
+        }
+
+        .welcome-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+        }
+
+        .action-button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Estilos responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                margin-top: 1rem;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Bienestar Laboral NOM-035</h1>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name">Cargando...</span>
+                    <button class="logout-btn" id="logout-btn">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i>Inicio</a></li>
+                <li><a href="test_nom035.html"><i class="fas fa-clipboard-check"></i>Test NOM-035</a></li>
+                <li><a href="pausas_activas.html"><i class="fas fa-dumbbell"></i>Pausas Activas</a></li>
+                <li><a href="diario_emocional.html"><i class="fas fa-book"></i>Diario Emocional</a></li>
+                <li><a href="consejos_breves.html"><i class="fas fa-lightbulb"></i>Consejos Breves</a></li>
+                <li><a href="checklist_nom035.html"><i class="fas fa-tasks"></i>Checklist Semanal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <section class="welcome-section">
+            <h2>Bienvenido a tu plataforma de Bienestar Laboral</h2>
+            <p>Esta aplicación te ayudará a mejorar tu bienestar en el trabajo, cumpliendo con la Norma Oficial Mexicana NOM-035, que busca identificar y prevenir factores de riesgo psicosocial en el entorno laboral.</p>
+            <a href="test_nom035.html" class="action-button">Comenzar ahora</a>
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <h3>Test NOM-035</h3>
+                <p>Evalúa los factores psicosociales en tu entorno laboral mediante un sencillo cuestionario basado en la NOM-035.</p>
+                <a href="test_nom035.html" class="action-button">Realizar test</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <h3>Pausas Activas</h3>
+                <p>Recibe recordatorios para tomar pausas activas durante tu jornada laboral y reducir el estrés.</p>
+                <a href="pausas_activas.html" class="action-button">Ver pausas</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Diario Emocional</h3>
+                <p>Registra tu estado emocional diario y visualiza tu progreso semanal a través de gráficas.</p>
+                <a href="diario_emocional.html" class="action-button">Ir al diario</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Consejos Breves</h3>
+                <p>Descubre consejos útiles sobre manejo del estrés, alimentación saludable y mejora del sueño.</p>
+                <a href="consejos_breves.html" class="action-button">Ver consejos</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <h3>Checklist Semanal</h3>
+                <p>Haz un seguimiento semanal de factores de riesgo psicosocial en tu entorno de trabajo.</p>
+                <a href="checklist_nom035.html" class="action-button">Ir al checklist</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bienestar Laboral NOM-035. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        import { getFirestore, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCd7FR-qaW7WleFP1kF2rQGYk9qvON51Ss",
+            authDomain: "bienestar-activo-69187.firebaseapp.com",
+            projectId: "bienestar-activo-69187",
+            storageBucket: "bienestar-activo-69187.firebasestorage.app",
+            messagingSenderId: "171149238020",
+            appId: "1:171149238020:web:33b5225103677c55203a51"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Referencias a elementos del DOM
+        const userNameElement = document.getElementById('user-name');
+        const logoutButton = document.getElementById('logout-btn');
+
+        // Verificar estado de autenticación
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Usuario autenticado
+                try {
+                    // Obtener datos del usuario desde Firestore
+                    const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+                    
+                    if (userDoc.exists()) {
+                        userNameElement.textContent = `Hola, ${userDoc.data().nombre}`;
+                    } else {
+                        userNameElement.textContent = `Hola, ${user.email}`;
+                    }
+                } catch (error) {
+                    console.error("Error al obtener datos del usuario:", error);
+                    userNameElement.textContent = `Hola, ${user.email}`;
+                }
+            } else {
+                // Usuario no autenticado, redirigir a página de autenticación
+                window.location.href = 'auth.html';
+            }
+        });
+
+        // Función de cierre de sesión
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // Redirigir a página de autenticación después de cerrar sesión
+                window.location.href = 'auth.html';
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+                alert("Error al cerrar sesión. Por favor, intenta de nuevo.");
+            }
+        });
+    </script>
+</body>
+</html>
