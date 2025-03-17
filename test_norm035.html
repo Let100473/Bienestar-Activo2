@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienestar Laboral NOM-035 - Test NOM-035</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos del encabezado */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            margin-right: 15px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: white;
+            color: #4CAF50;
+        }
+
+        /* Estilos de la navegación */
+        nav {
+            background-color: #333;
+            margin-bottom: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            overflow-x: auto;
+        }
+
+        .nav-links li {
+            flex: 0 0 auto;
+        }
+
+        .nav-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 1rem;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #4CAF50;
+        }
+
+        .nav-links i {
+            margin-right: 8px;
+        }
+
+        /* Estilos del contenido principal */
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            text-align: center;
+        }
+
+        /* Estilos del formulario de test */
+        .test-form {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-instruction {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .question-group {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-group:last-child {
+            border-bottom: none;
+        }
+
+        .question {
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+
+        .option input {
+            margin-right: 8px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 2rem auto 0;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilos del resultado */
+        .result-section {
+            display: none;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #4CAF50;
+        }
+
+        .result-category {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+
+        .low-risk {
+            background-color: #dff0d8;
+            border-left: 4px solid #5cb85c;
+        }
+
+        .medium-risk {
+            background-color: #fcf8e3;
+            border-left: 4px solid #f0ad4e;
+        }
+
+        .high-risk {
+            background-color: #f2dede;
+            border-left: 4px solid #d9534f;
+        }
+
+        .result-message {
+            margin-bottom: 1.5rem;
+        }
+
+        .recommendations {
+            margin-top: 1.5rem;
+        }
+
+        .recommendation-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .new-test-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .new-test-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Estilos responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                margin-top: 1rem;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Bienestar Laboral NOM-035</h1>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name">Cargando...</span>
+                    <button class="logout-btn" id="logout-btn">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i>Inicio</a></li>
+                <li><a href="test_nom035.html" class="active"><i class="fas fa-clipboard-check"></i>Test NOM-035</a></li>
+                <li><a href="pausas_activas.html"><i class="fas fa-dumbbell"></i>Pausas Activas</a></li>
+                <li><a href="diario_emocional.html"><i class="fas fa-book"></i>Diario Emocional</a></li>
+                <li><a href="consejos_breves.html"><i class="fas fa-lightbulb"></i>Consejos Breves</a></li>
+                <li><a href="checklist_nom035.html"><i class="fas fa-tasks"></i>Checklist Semanal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <h1 class="page-title">Test de Factores Psicosociales NOM-035</h1>
+        <p class="intro-text">Este test te ayudará a identificar y evaluar los factores de riesgo psicosocial en tu entorno laboral, cumpliendo con los requisitos establecidos en la NOM-035-STPS-2018.</p>
+        
+        <!-- Formulario del test -->
+        <form id="test-form" class="test-form">
+            <div class="form-instruction">
+                <p>Responde a las siguientes preguntas de acuerdo a tu experiencia laboral actual. Todas tus respuestas son confidenciales y serán utilizadas únicamente para mejorar tu bienestar en el trabajo.</p>
+            </div>
+
+            <!-- Preguntas del test -->
+            <div class="question-group">
+                <p class="question">1. ¿Tu trabajo te exige tomar decisiones difíciles?</p>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q1" value="0" required> Nunca</label>
+                    <label class="option"><input type="radio" name="q1" value="1"> Casi nunca</label>
+                    <label class="option"><input type="radio" name="q1" value="2"> Algunas veces</label>
+                    <label class="option"><input type="radio" name="q1" value="3"> Casi siempre</label>
+                    <label class="option"><input type="radio" name="q1" value="4"> Siempre</label>
+                </div>
+            </div>
+
+            <div class="question-group">
+                <p class="question">2. ¿Tienes que trabajar muy rápido para cumplir con las tareas que se te asignan?</p>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q2" value="0" required> Nunca</label>
+                    <label class="option"><input type="radio" name="q2" value="1"> Casi nunca</label>
+                    <label class="option"><input type="radio" name="q2" value="2"> Algunas veces</label>
+                    <label class="option"><input type="radio" name="q2" value="3"> Casi siempre</label>
+                    <label class="option"><input type="radio" name="q2" value="4"> Siempre</label>
+                </div>
+            </div>
+
+            <div class="question-group">
+                <p class="question">3. ¿Las actividades que realizas son peligrosas para tu salud física?</p>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q3" value="0" required> Nunca</label>
+                    <label class="option"><input type="radio" name="q3" value="1"> Casi nunca</label>
+                    <label class="option"><input type="radio" name="q3" value="2"> Algunas veces</label>
+                    <label class="option"><input type="radio" name="q3" value="3"> Casi siempre</label>
+                    <label class="option"><input type="radio" name="q3" value="4"> Siempre</label>
+                </div>
+            </div>
+
+            <div class="question-group">
+                <p class="question">4. ¿Tu trabajo te permite desarrollar tus habilidades y conocimientos?</p>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q4" value="4" required> Nunca</label>
+                    <label class="option"><input type="radio" name="q4" value="3"> Casi nunca</label>
+                    <label class="option"><input type="radio" name="q4" value="2"> Algunas veces</label>
+                    <label class="option"><input type="radio" name="q4" value="1"> Casi siempre</label>
+                    <label class="option"><input type="radio" name="q4" value="0"> Siempre</label>
+                </div>
+            </div>
+
+            <div class="question-group">
+                <p class="question">5. ¿Recibes apoyo de tus jefes o superiores para resolver problemas en el trabajo?</p>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q5" value="4" required> Nunca</label>
+                    <label class="option"><input type="radio" name="q5" value="3"> Casi nunca</label>
+                    <label class="option"><input type="radio" name="q5" value="2"> Algunas veces</label>
+                    <label class="option"><input type="radio" name="q5" value="1"> Casi siempre</label>
+                    <label class="option"><input type="radio" name="q5" value="0"> Siempre</label>
+                </div>
+            </div>
+
+            <div class="question-group">
+                <p class="question">6. ¿Tu jornada de trabajo se prolonga más de 8 horas diarias?</p>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q6" value="0" required> Nunca</label>
+                    <label class="option"><input type="radio" name="q6" value="1"> Casi nunca</label>
+                    <label class="option"><input type="radio" name="q6" value="2"> Algunas veces</label>
+                    <label class="option"><input type="radio" name="q6" value="3"> Casi siempre</label>
+                    <label class="option"><input type="radio" name="q6" value="4"> Siempre</label>
+                </div>
+            </div>
+
+            <div class="question-group">
+                <p class="question">7. ¿El trabajo que realizas te genera un sentimiento de orgullo y satisfacción?</p>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q7" value="4" required> Nunca</label>
+                    <label class="option"><input type="radio" name="q7" value="3"> Casi nunca</label>
+                    <label class="option"><input type="radio" name="q7" value="2"> Algunas veces</label>
+                    <label class="option"><input type="radio" name="q7" value="1"> Casi siempre</label>
+                    <label class="option"><input type="radio" name="q7" value="0"> Siempre</label>
+                </div>
+            </div>
+
+            <div class="question-group">
+                <p class="question">8. ¿Sientes que hay un ambiente de confianza y respeto entre tus compañeros de trabajo?</p>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q8" value="4" required> Nunca</label>
+                    <label class="option"><input type="radio" name="q8" value="3"> Casi nunca</label>
+                    <label class="option"><input type="radio" name="q8" value="2"> Algunas veces</label>
+                    <label class="option"><input type="radio" name="q8" value="1"> Casi siempre</label>
+                    <label class="option"><input type="radio" name="q8" value="0"> Siempre</label>
+                </div>
+            </div>
+
+            <div class="question-group">
+                <p class="question">9. ¿En tu trabajo te exigen atender asuntos laborales fuera del horario de trabajo?</p>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q9" value="0" required> Nunca</label>
+                    <label class="option"><input type="radio" name="q9" value="1"> Casi nunca</label>
+                    <label class="option"><input type="radio" name="q9" value="2"> Algunas veces</label>
+                    <label class="option"><input type="radio" name="q9" value="3"> Casi siempre</label>
+                    <label class="option"><input type="radio" name="q9" value="4"> Siempre</label>
+                </div>
+            </div>
+
+            <div class="question-group">
+                <p class="question">10. ¿Tienes periodos de descanso durante tu jornada laboral?</p>
+                <div class="options">
+                    <label class="option"><input type="radio" name="q10" value="4" required> Nunca</label>
+                    <label class="option"><input type="radio" name="q10" value="3"> Casi nunca</label>
+                    <label class="option"><input type="radio" name="q10" value="2"> Algunas veces</label>
+                    <label class="option"><input type="radio" name="q10" value="1"> Casi siempre</label>
+                    <label class="option"><input type="radio" name="q10" value="0"> Siempre</label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Enviar respuestas</button>
+        </form>
+
+        <!-- Sección de resultados (inicialmente oculta) -->
+        <section id="result-section" class="result-section">
+            <h2 class="result-title">Resultados de tu evaluación</h2>
+            <div id="result-category" class="result-category">
+                <!-- Aquí se mostrará la categoría de riesgo -->
+            </div>
+            <div id="result-message" class="result-message">
+                <!-- Aquí se mostrará el mensaje de resultados -->
+            </div>
+            <div class="recommendations">
+                <h3>Recomendaciones:</h3>
+                <ul id="recommendations-list">
+                    <!-- Aquí se mostrarán las recomendaciones -->
+                </ul>
+            </div>
+            <a href="test_nom035.html" class="new-test-btn">Realizar otro test</a>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bienestar Laboral NOM-035. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCd7FR-qaW7WleFP1kF2rQGYk9qvON51Ss",
+            authDomain: "bienestar-activo-69187.firebaseapp.com",
+            projectId: "bienestar-activo-69187",
+            storageBucket: "bienestar-activo-69187.firebasestorage.app",
+            messagingSenderId: "171149238020",
+            appId: "1:171149238020:web:33b5225103677c55203a51"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Referencias a elementos del DOM
+        const userNameElement = document.getElementById('user-name');
+        const logoutButton = document.getElementById('logout-btn');
+        const testForm = document.getElementById('test-form');
+        const resultSection = document.getElementById('result-section');
+        const resultCategory = document.getElementById('result-category');
+        const resultMessage = document.getElementById('result-message');
+        const recommendationsList = document.getElementById('recommendations-list');
+
+        // Verificar estado de autenticación
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuario autenticado
+                userNameElement.textContent = `Hola, ${user.email}`;
+            } else {
+                // Usuario no autenticado, redirigir a página de autenticación
+                window.location.href = 'auth.html';
+            }
+        });
+
+        // Función de cierre de sesión
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // Redirigir a página de autenticación después de cerrar sesión
+                window.location.href = 'auth.html';
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+                alert("Error al cerrar sesión. Por favor, intenta de nuevo.");
+            }
+        });
+
+        // Procesar el formulario del test
+        testForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Obtener respuestas del formulario
+            const answers = {
+                q1: parseInt(document.querySelector('input[name="q1"]:checked').value),
+                q2: parseInt(document.querySelector('input[name="q2"]:checked').value),
+                q3: parseInt(document.querySelector('input[name="q3"]:checked').value),
+                q4: parseInt(document.querySelector('input[name="q4"]:checked').value),
+                q5: parseInt(document.querySelector('input[name="q5"]:checked').value),
+                q6: parseInt(document.querySelector('input[name="q6"]:checked').value),
+                q7: parseInt(document.querySelector('input[name="q7"]:checked').value),
+                q8: parseInt(document.querySelector('input[name="q8"]:checked').value),
+                q9: parseInt(document.querySelector('input[name="q9"]:checked').value),
+                q10: parseInt(document.querySelector('input[name="q10"]:checked').value)
+            };
+            
+            // Calcular puntaje total
+            const totalScore = Object.values(answers).reduce((sum, value) => sum + value, 0);
+            
+            // Determinar categoría de riesgo
+            let riskCategory = '';
+            let resultCategoryClass = '';
+            let resultText = '';
+            let recommendations = [];
+            
+            if (totalScore <= 10) {
+                riskCategory = 'Riesgo Bajo';
+                resultCategoryClass = 'low-risk';
+                resultText = 'Tu entorno laboral muestra niveles bajos de factores de riesgo psicosocial, lo que es muy positivo para tu salud mental y bienestar.';
+                recommendations = [
+                    'Mantén tus buenos hábitos laborales actuales',
+                    'Continúa practicando pausas activas regularmente',
+                    'Considera compartir tus buenas prácticas con tus compañeros'
+                ];
+            } else if (totalScore <= 20) {
+                riskCategory = 'Riesgo Medio';
+                resultCategoryClass = 'medium-risk';
+                resultText = 'Tu entorno laboral presenta algunos factores de riesgo psicosocial que requieren atención para evitar que afecten tu bienestar.';
+                recommendations = [
+                    'Incrementa las pausas activas durante tu jornada laboral',
+                    'Practica técnicas de manejo de estrés regularmente',
+                    'Comunica a tus superiores las áreas de oportunidad detectadas',
+                    'Mantén un registro de tu estado emocional diario'
+                ];
+            } else {
+                riskCategory = 'Riesgo Alto';
+                resultCategoryClass = 'high-risk';
+                resultText = 'Tu entorno laboral presenta niveles significativos de factores de riesgo psicosocial que podrían estar afectando tu salud mental y bienestar.';
+                recommendations = [
+                    'Consulta con profesionales de salud ocupacional',
+                    'Implementa técnicas de manejo del estrés de manera inmediata',
+                    'Establece límites claros entre tu vida laboral y personal',
+                    'Considera solicitar ajustes en tu carga de trabajo',
+                    'Utiliza recursos de apoyo psicológico disponibles en tu organización'
+                ];
+            }
+            
+            // Mostrar resultados
+            resultCategory.innerHTML = `<h3>${riskCategory}</h3><p>Puntaje: ${totalScore}/40</p>`;
+            resultCategory.className = `result-category ${resultCategoryClass}`;
+            resultMessage.textContent = resultText;
+            
+            // Agregar recomendaciones
+            recommendationsList.innerHTML = '';
+            recommendations.forEach(recommendation => {
+                const li = document.createElement('li');
+                li.className = 'recommendation-item';
+                li.textContent = recommendation;
+                recommendationsList.appendChild(li);
+            });
+            
+            // Mostrar sección de resultados
+            resultSection.style.display = 'block';
+            
+            // Desplazarse a la sección de resultados
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+            
+            try {
+                // Guardar resultados en Firestore
+                const user = auth.currentUser;
+                if (user) {
+                    await addDoc(collection(db, "test_nom035"), {
+                        userId: user.uid,
+                        userEmail: user.email,
+                        answers: answers,
+                        totalScore: totalScore,
+                        riskCategory: riskCategory,
+                        timestamp: serverTimestamp()
+                    });
+                    console.log("Resultados guardados correctamente");
+                }
+            } catch (error) {
+                console.error("Error al guardar resultados:", error);
+            }
+        });
+    </script>
+</body>
+</html>
