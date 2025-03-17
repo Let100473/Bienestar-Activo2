@@ -611,11 +611,30 @@
         // Cargar historial de checklists
         async function loadChecklistHistory(userId) {
             try {
+                // Primero intentamos crear la colección si no existe
+                try {
+                    // Consultar si hay al menos un documento en la colección
+                    const testQuery = query(
+                        collection(db, "checklist_nom035"),
+                        limit(1)
+                    );
+                    await getDocs(testQuery);
+                    // Si no da error, la colección existe
+                } catch (error) {
+                    console.log("Es posible que la colección no exista aún, esto es normal si es la primera vez.");
+                    // Mostrar mensaje de no hay registros
+                    historialList.innerHTML = `
+                        <li class="historial-item">
+                            <div class="historial-fecha">No hay registros todavía.</div>
+                        </li>
+                    `;
+                    return;
+                }
+                
                 // Consultar checklists del usuario, ordenados por fecha
                 const q = query(
                     collection(db, "checklist_nom035"),
-                    where("userId", "==", userId),
-                    orderBy("timestamp", "desc")
+                    where("userId", "==", userId)
                 );
                 
                 const querySnapshot = await getDocs(q);
@@ -632,15 +651,31 @@
                     return;
                 }
                 
-                // Mostrar historial
+                // Array para almacenar documentos y ordenarlos manualmente
+                const documents = [];
+                
+                // Recopilar documentos
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
+                    // Añadir ID del documento a los datos
+                    data.id = doc.id;
+                    documents.push(data);
+                });
+                
+                // Ordenar documentos por timestamp (más reciente primero)
+                documents.sort((a, b) => {
+                    const timeA = a.timestamp ? a.timestamp.seconds : 0;
+                    const timeB = b.timestamp ? b.timestamp.seconds : 0;
+                    return timeB - timeA;
+                });
+                
+                // Mostrar historial
+                documents.forEach((data) => {
                     const semana = formatWeek(data.semana);
                     const porcentaje = data.porcentajeCumplimiento.toFixed(0);
                     
                     const historialItem = document.createElement('li');
                     historialItem.className = 'historial-item';
-                    historialItem.dataset.docId = doc.id;
                     
                     historialItem.innerHTML = `
                         <div class="historial-fecha">Semana: ${semana}</div>
@@ -661,9 +696,10 @@
                 });
             } catch (error) {
                 console.error("Error al cargar historial:", error);
+                console.log(error); // Mostrar el error completo en la consola
                 historialList.innerHTML = `
                     <li class="historial-item">
-                        <div class="historial-fecha">Error al cargar historial.</div>
+                        <div class="historial-fecha">Error al cargar historial. Verifica la consola para más detalles.</div>
                     </li>
                 `;
             }
@@ -693,20 +729,25 @@
 
         // Función para formatear la semana (YYYY-Wxx a "xx de [mes]")
         function formatWeek(weekStr) {
-            const [year, weekPart] = weekStr.split('-');
-            const weekNum = parseInt(weekPart.substring(1));
-            
-            // Calcular fecha aproximada del primer día de la semana
-            const firstDayOfYear = new Date(parseInt(year), 0, 1);
-            const daysToAdd = (weekNum - 1) * 7 - firstDayOfYear.getDay();
-            const weekDate = new Date(parseInt(year), 0, 1 + daysToAdd);
-            
-            const months = [
-                'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-                'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
-            ];
-            
-            return `${weekNum} de ${months[weekDate.getMonth()]} de ${year}`;
+            try {
+                const [year, weekPart] = weekStr.split('-');
+                const weekNum = parseInt(weekPart.substring(1));
+                
+                // Calcular fecha aproximada del primer día de la semana
+                const firstDayOfYear = new Date(parseInt(year), 0, 1);
+                const daysToAdd = (weekNum - 1) * 7 - firstDayOfYear.getDay();
+                const weekDate = new Date(parseInt(year), 0, 1 + daysToAdd);
+                
+                const months = [
+                    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+                    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+                ];
+                
+                return `${weekNum} de ${months[weekDate.getMonth()]} de ${year}`;
+            } catch (error) {
+                console.error("Error al formatear semana:", error);
+                return weekStr; // Devolver el formato original si hay error
+            }
         }
     </script>
 </body>
