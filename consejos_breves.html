@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienestar Laboral NOM-035 - Consejos Breves</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos del encabezado */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            margin-right: 15px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: white;
+            color: #4CAF50;
+        }
+
+        /* Estilos de la navegación */
+        nav {
+            background-color: #333;
+            margin-bottom: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            overflow-x: auto;
+        }
+
+        .nav-links li {
+            flex: 0 0 auto;
+        }
+
+        .nav-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 1rem;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #4CAF50;
+        }
+
+        .nav-links i {
+            margin-right: 8px;
+        }
+
+        /* Estilos del contenido principal */
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            text-align: center;
+        }
+
+        /* Estilos de las categorías de consejos */
+        .categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            background-color: #f1f1f1;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .category-btn i {
+            margin-right: 8px;
+        }
+
+        /* Estilos del contenedor de consejos */
+        .consejos-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Estilos del consejo actual */
+        .consejo {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .consejo-icon {
+            font-size: 3rem;
+            color: #4CAF50;
+            margin-bottom: 1.5rem;
+        }
+
+        .consejo-texto {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .consejo-fuente {
+            font-style: italic;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Estilos de los botones de navegación */
+        .consejo-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .consejo-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .consejo-btn:hover {
+            background-color: #45a049;
+        }
+
+        .consejo-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .consejo-btn i {
+            margin-right: 8px;
+        }
+
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Estilos responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                margin-top: 1rem;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .categories {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .category-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Bienestar Laboral NOM-035</h1>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name">Cargando...</span>
+                    <button class="logout-btn" id="logout-btn">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i>Inicio</a></li>
+                <li><a href="test_nom035.html"><i class="fas fa-clipboard-check"></i>Test NOM-035</a></li>
+                <li><a href="pausas_activas.html"><i class="fas fa-dumbbell"></i>Pausas Activas</a></li>
+                <li><a href="diario_emocional.html"><i class="fas fa-book"></i>Diario Emocional</a></li>
+                <li><a href="consejos_breves.html" class="active"><i class="fas fa-lightbulb"></i>Consejos Breves</a></li>
+                <li><a href="checklist_nom035.html"><i class="fas fa-tasks"></i>Checklist Semanal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <h1 class="page-title">Consejos Breves</h1>
+        <p class="intro-text">Descubre consejos rápidos y prácticos para mejorar tu bienestar laboral, reducir el estrés y mantener un equilibrio saludable entre tu vida personal y profesional.</p>
+        
+        <!-- Categorías de consejos -->
+        <div class="categories">
+            <button class="category-btn active" data-category="estres">
+                <i class="fas fa-brain"></i>Manejo del Estrés
+            </button>
+            <button class="category-btn" data-category="alimentacion">
+                <i class="fas fa-apple-alt"></i>Alimentación Saludable
+            </button>
+            <button class="category-btn" data-category="sueno">
+                <i class="fas fa-moon"></i>Sueño de Calidad
+            </button>
+        </div>
+        
+        <!-- Contenedor de consejos -->
+        <div class="consejos-container">
+            <div class="consejo" id="consejo-actual">
+                <div class="consejo-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <p class="consejo-texto">
+                    Cargando consejo...
+                </p>
+                <p class="consejo-fuente">
+                    Fuente: Bienestar Laboral NOM-035
+                </p>
+            </div>
+            
+            <div class="consejo-nav">
+                <button class="consejo-btn" id="nuevo-consejo-btn">
+                    <i class="fas fa-random"></i>Nuevo Consejo
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bienestar Laboral NOM-035. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCd7FR-qaW7WleFP1kF2rQGYk9qvON51Ss",
+            authDomain: "bienestar-activo-69187.firebaseapp.com",
+            projectId: "bienestar-activo-69187",
+            storageBucket: "bienestar-activo-69187.firebasestorage.app",
+            messagingSenderId: "171149238020",
+            appId: "1:171149238020:web:33b5225103677c55203a51"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Referencias a elementos del DOM
+        const userNameElement = document.getElementById('user-name');
+        const logoutButton = document.getElementById('logout-btn');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const consejoActual = document.getElementById('consejo-actual');
+        const nuevoConsejoBtn = document.getElementById('nuevo-consejo-btn');
+
+        // Variables de estado
+        let currentCategory = 'estres';
+        let lastConsejoIndex = -1;
+
+        // Base de datos de consejos
+        const consejos = {
+            estres: [
+                {
+                    texto: "Practica la respiración profunda durante 2 minutos: inhala por la nariz contando hasta 4, mantén el aire por 2 segundos y exhala lentamente por la boca contando hasta 6.",
+                    icono: "fas fa-wind"
+                },
+                {
+                    texto: "Establece límites claros entre tu vida laboral y personal. Cuando termines tu jornada, desconecta completamente de correos y mensajes de trabajo.",
+                    icono: "fas fa-door-closed"
+                },
+                {
+                    texto: "Aprende a decir 'no' cuando sea necesario. Aceptar más responsabilidades de las que puedes manejar aumenta el estrés y reduce tu efectividad.",
+                    icono: "fas fa-ban"
+                },
+                {
+                    texto: "Identifica tus 'ladrones de tiempo' (redes sociales, interrupciones, multitarea) y establece estrategias para minimizarlos.",
+                    icono: "fas fa-hourglass-half"
+                },
+                {
+                    texto: "Dedica 5 minutos diarios a la meditación mindfulness, enfocándote solamente en tu respiración y en el momento presente.",
+                    icono: "fas fa-om"
+                },
+                {
+                    texto: "Cuando sientas que el estrés aumenta, detente y pregúntate: '¿Esto importará dentro de 5 años?' Ayuda a poner las situaciones en perspectiva.",
+                    icono: "fas fa-question-circle"
+                },
+                {
+                    texto: "Escribe una lista diaria con tus 3 prioridades más importantes. Concéntrate en completarlas antes de pasar a tareas menos importantes.",
+                    icono: "fas fa-tasks"
+                },
+                {
+                    texto: "Incorpora pequeños momentos de actividad física durante tu jornada laboral: camina mientras hablas por teléfono o haz estiramientos cada hora.",
+                    icono: "fas fa-walking"
+                },
+                {
+                    texto: "Conecta con la naturaleza: las plantas en tu espacio de trabajo reducen el estrés y mejoran la calidad del aire y tu bienestar.",
+                    icono: "fas fa-leaf"
+                },
+                {
+                    texto: "Practica la gratitud diaria: antes de dormir, anota tres cosas positivas que ocurrieron durante el día, por pequeñas que sean.",
+                    icono: "fas fa-heart"
+                }
+            ],
+            alimentacion: [
+                {
+                    texto: "Mantén un recipiente con agua visible en tu escritorio y establece recordatorios para beber al menos 2 litros de agua durante tu jornada laboral.",
+                    icono: "fas fa-tint"
+                },
+                {
+                    texto: "Prepara tus comidas con anticipación para evitar recurrir a opciones poco saludables cuando estás con hambre y con poco tiempo.",
+                    icono: "fas fa-utensils"
+                },
+                {
+                    texto: "Sigue la regla del plato: llena la mitad con vegetales, un cuarto con proteínas y un cuarto con carbohidratos complejos.",
+                    icono: "fas fa-circle-notch"
+                },
+                {
+                    texto: "Evita comer mientras trabajas o miras pantallas. Come conscientemente, disfrutando cada bocado y reconociendo las señales de saciedad.",
+                    icono: "fas fa-desktop"
+                },
+                {
+                    texto: "Incorpora frutos secos y semillas como snacks. Una pequeña porción provee energía sostenida y nutrientes esenciales.",
+                    icono: "fas fa-seedling"
+                },
+                {
+                    texto: "Reduce el consumo de cafeína después del mediodía. Opta por tés herbales que calman el sistema nervioso como manzanilla, tilo o menta.",
+                    icono: "fas fa-coffee"
+                },
+                {
+                    texto: "Incluye proteínas en cada comida para mantener niveles estables de energía y evitar picos de glucosa que afectan tu concentración.",
+                    icono: "fas fa-egg"
+                },
+                {
+                    texto: "Lleva contigo una pequeña lonchera con frutas frescas y verduras cortadas para evitar recurrir a máquinas expendedoras o comida procesada.",
+                    icono: "fas fa-apple-alt"
+                },
+                {
+                    texto: "Identifica tus desencadenantes emocionales para comer y busca alternativas saludables para manejar el estrés como caminar o respirar profundamente.",
+                    icono: "fas fa-heartbeat"
+                },
+                {
+                    texto: "Dale color a tu dieta: incluye frutas y verduras de diferentes colores para asegurar una amplia gama de vitaminas y antioxidantes.",
+                    icono: "fas fa-palette"
+                }
+            ],
+            sueno: [
+                {
+                    texto: "Mantén un horario regular de sueño, incluso los fines de semana. Tu cuerpo funciona mejor con una rutina constante.",
+                    icono: "fas fa-clock"
+                },
+                {
+                    texto: "Crea un ritual nocturno relajante: apaga dispositivos electrónicos 1 hora antes de dormir, toma un baño tibio o lee un libro impreso.",
+                    icono: "fas fa-bed"
+                },
+                {
+                    texto: "Optimiza tu ambiente de sueño: mantén tu habitación oscura, fresca (entre 18-20°C) y libre de ruidos molestos.",
+                    icono: "fas fa-moon"
+                },
+                {
+                    texto: "Evita comidas pesadas, alcohol y cafeína al menos 4 horas antes de acostarte, pues interfieren con la calidad del sueño.",
+                    icono: "fas fa-pizza-slice"
+                },
+                {
+                    texto: "Si no puedes dormir después de 20 minutos, levántate y realiza una actividad relajante con luz tenue hasta que sientas sueño nuevamente.",
+                    icono: "fas fa-couch"
+                },
+                {
+                    texto: "Exponte a la luz natural durante el día, especialmente en la mañana, para regular tu ritmo circadiano y mejorar la calidad del sueño nocturno.",
+                    icono: "fas fa-sun"
+                },
+                {
+                    texto: "Practica ejercicios de relajación muscular progresiva antes de dormir: tensa y luego relaja cada grupo muscular desde los pies hasta la cabeza.",
+                    icono: "fas fa-spa"
+                },
+                {
+                    texto: "Evita el uso del celular como despertador. Utiliza un despertador tradicional para no tentarte a revisar notificaciones durante la noche.",
+                    icono: "fas fa-mobile-alt"
+                },
+                {
+                    texto: "Si tus preocupaciones te mantienen despierto, escríbelas en un papel y déjalas para el día siguiente. Esto ayuda a 'descargar' la mente.",
+                    icono: "fas fa-pen"
+                },
+                {
+                    texto: "La melatonina se produce naturalmente en la oscuridad. Reduce la exposición a luces brillantes durante la noche, incluyendo pantallas de dispositivos.",
+                    icono: "fas fa-lightbulb"
+                }
+            ]
+        };
+
+        // Verificar estado de autenticación
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuario autenticado
+                userNameElement.textContent = `Hola, ${user.email}`;
+                
+                // Mostrar consejo inicial
+                mostrarConsejoAleatorio();
+            } else {
+                // Usuario no autenticado, redirigir a página de autenticación
+                window.location.href = 'auth.html';
+            }
+        });
+
+        // Función de cierre de sesión
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // Redirigir a página de autenticación después de cerrar sesión
+                window.location.href = 'auth.html';
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+                alert("Error al cerrar sesión. Por favor, intenta de nuevo.");
+            }
+        });
+
+        // Cambiar categoría de consejos
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Actualizar clases de botones
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Actualizar categoría actual
+                currentCategory = button.getAttribute('data-category');
+                lastConsejoIndex = -1; // Reiniciar índice para nueva categoría
+                
+                // Mostrar nuevo consejo
+                mostrarConsejoAleatorio();
+            });
+        });
+
+        // Mostrar nuevo consejo al hacer clic en el botón
+        nuevoConsejoBtn.addEventListener('click', mostrarConsejoAleatorio);
+
+        // Función para mostrar un consejo aleatorio
+        function mostrarConsejoAleatorio() {
+            const consejosCategoria = consejos[currentCategory];
+            let randomIndex;
+            
+            // Asegurar que no se repita el último consejo mostrado
+            do {
+                randomIndex = Math.floor(Math.random() * consejosCategoria.length);
+            } while (randomIndex === lastConsejoIndex && consejosCategoria.length > 1);
+            
+            lastConsejoIndex = randomIndex;
+            const consejo = consejosCategoria[randomIndex];
+            
+            // Actualizar icono
+            const iconoElement = consejoActual.querySelector('.consejo-icon');
+            iconoElement.innerHTML = `<i class="${consejo.icono}"></i>`;
+            
+            // Actualizar texto
+            const textoElement = consejoActual.querySelector('.consejo-texto');
+            textoElement.textContent = consejo.texto;
+            
+            // Actualizar fuente
+            const fuenteElement = consejoActual.querySelector('.consejo-fuente');
+            fuenteElement.textContent = "Fuente: Bienestar Laboral NOM-035";
+            
+            // Animar el cambio
+            consejoActual.style.opacity = 0;
+            setTimeout(() => {
+                consejoActual.style.opacity = 1;
+            }, 300);
+        }
+    </script>
+</body>
+</html>
