@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienestar Laboral NOM-035 - Pausas Activas</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos del encabezado */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            margin-right: 15px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: white;
+            color: #4CAF50;
+        }
+
+        /* Estilos de la navegación */
+        nav {
+            background-color: #333;
+            margin-bottom: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            overflow-x: auto;
+        }
+
+        .nav-links li {
+            flex: 0 0 auto;
+        }
+
+        .nav-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 1rem;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #4CAF50;
+        }
+
+        .nav-links i {
+            margin-right: 8px;
+        }
+
+        /* Estilos del contenido principal */
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            text-align: center;
+        }
+
+        /* Estilos del timer y notificación */
+        .timer-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: 2.5rem;
+            margin: 1rem 0;
+            font-weight: 700;
+            color: #4CAF50;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .timer-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .timer-btn:hover {
+            background-color: #45a049;
+        }
+
+        .timer-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .notification-toggle {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-toggle label {
+            margin-left: 10px;
+        }
+
+        /* Estilos de las pausas activas */
+        .pausas-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .pausa-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .pausa-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pausa-icon {
+            background-color: #4CAF50;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            font-size: 3rem;
+        }
+
+        .pausa-content {
+            padding: 1.5rem;
+        }
+
+        .pausa-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .pausa-steps {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .pausa-steps li {
+            margin-bottom: 0.5rem;
+        }
+
+        .pausa-benefit {
+            font-style: italic;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+
+        /* Estilos de la notificación */
+        .notification {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .notification-title {
+            font-weight: 500;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .notification-message {
+            margin-bottom: 10px;
+        }
+
+        .notification-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .notification-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .notification-snooze {
+            background-color: white;
+            color: #4CAF50;
+        }
+
+        .notification-ok {
+            background-color: #333;
+            color: white;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Estilos responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                margin-top: 1rem;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .pausas-section {
+                grid-template-columns: 1fr;
+            }
+
+            .timer-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Bienestar Laboral NOM-035</h1>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name">Cargando...</span>
+                    <button class="logout-btn" id="logout-btn">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i>Inicio</a></li>
+                <li><a href="test_nom035.html"><i class="fas fa-clipboard-check"></i>Test NOM-035</a></li>
+                <li><a href="pausas_activas.html" class="active"><i class="fas fa-dumbbell"></i>Pausas Activas</a></li>
+                <li><a href="diario_emocional.html"><i class="fas fa-book"></i>Diario Emocional</a></li>
+                <li><a href="consejos_breves.html"><i class="fas fa-lightbulb"></i>Consejos Breves</a></li>
+                <li><a href="checklist_nom035.html"><i class="fas fa-tasks"></i>Checklist Semanal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <h1 class="page-title">Pausas Activas</h1>
+        <p class="intro-text">Las pausas activas son breves descansos durante la jornada laboral que ayudan a recuperar energía, mejorar el desempeño y prevenir enfermedades causadas por posturas prolongadas y movimientos repetitivos.</p>
+        
+        <!-- Sección del temporizador -->
+        <section class="timer-section">
+            <h2>Temporizador de Pausas Activas</h2>
+            <p>Configura recordatorios para tomar pausas activas durante tu jornada laboral.</p>
+            
+            <div class="timer-display" id="timer-display">
+                01:30:00
+            </div>
+            
+            <div class="timer-controls">
+                <button class="timer-btn" id="start-timer">Iniciar</button>
+                <button class="timer-btn" id="reset-timer" disabled>Reiniciar</button>
+            </div>
+            
+            <div class="notification-toggle">
+                <input type="checkbox" id="notification-toggle" checked>
+                <label for="notification-toggle">Activar notificaciones cada 90 minutos</label>
+            </div>
+        </section>
+        
+        <!-- Sección de pausas activas -->
+        <section class="pausas-section">
+            <div class="pausa-card">
+                <div class="pausa-icon">
+                    <i class="fas fa-head-side"></i>
+                </div>
+                <div class="pausa-content">
+                    <h3 class="pausa-title">Ejercicios para el cuello</h3>
+                    <ol class="pausa-steps">
+                        <li>Inclina lentamente tu cabeza hacia el hombro derecho.</li>
+                        <li>Mantén la posición por 5 segundos.</li>
+                        <li>Vuelve al centro y repite hacia el lado izquierdo.</li>
+                        <li>Realiza 5 repeticiones por cada lado.</li>
+                    </ol>
+                    <p class="pausa-benefit">Beneficio: Reduce la tensión acumulada en el cuello y previene dolores cervicales.</p>
+                </div>
+            </div>
+            
+            <div class="pausa-card">
+                <div class="pausa-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="pausa-content">
+                    <h3 class="pausa-title">Descanso visual</h3>
+                    <ol class="pausa-steps">
+                        <li>Frota tus manos para generar calor.</li>
+                        <li>Coloca las palmas sobre tus ojos cerrados por 20 segundos.</li>
+                        <li>Mira a lo lejos por 20 segundos.</li>
+                        <li>Mira un objeto cercano por 20 segundos.</li>
+                        <li>Repite este ciclo 3 veces.</li>
+                    </ol>
+                    <p class="pausa-benefit">Beneficio: Disminuye la fatiga visual y el cansancio ocular por uso prolongado de pantallas.</p>
+                </div>
+            </div>
+            
+            <div class="pausa-card">
+                <div class="pausa-icon">
+                    <i class="fas fa-hand-paper"></i>
+                </div>
+                <div class="pausa-content">
+                    <h3 class="pausa-title">Estiramientos de manos y muñecas</h3>
+                    <ol class="pausa-steps">
+                        <li>Extiende los brazos frente a ti.</li>
+                        <li>Abre y cierra las manos 10 veces.</li>
+                        <li>Gira las muñecas en círculos, 5 veces en cada dirección.</li>
+                        <li>Estira los dedos y mantén por 5 segundos, luego relaja.</li>
+                    </ol>
+                    <p class="pausa-benefit">Beneficio: Previene el síndrome del túnel carpiano y relaja los músculos de las manos.</p>
+                </div>
+            </div>
+            
+            <div class="pausa-card">
+                <div class="pausa-icon">
+                    <i class="fas fa-walking"></i>
+                </div>
+                <div class="pausa-content">
+                    <h3 class="pausa-title">Caminata rápida</h3>
+                    <ol class="pausa-steps">
+                        <li>Levántate de tu lugar de trabajo.</li>
+                        <li>Camina energéticamente por 3-5 minutos.</li>
+                        <li>Respira profundamente mientras caminas.</li>
+                        <li>Puedes subir y bajar escaleras si es posible.</li>
+                    </ol>
+                    <p class="pausa-benefit">Beneficio: Activa la circulación, mejora el estado de ánimo y reduce la fatiga mental.</p>
+                </div>
+            </div>
+            
+            <div class="pausa-card">
+                <div class="pausa-icon">
+                    <i class="fas fa-lungs"></i>
+                </div>
+                <div class="pausa-content">
+                    <h3 class="pausa-title">Respiración consciente</h3>
+                    <ol class="pausa-steps">
+                        <li>Siéntate con la espalda recta.</li>
+                        <li>Inhala por la nariz contando hasta 4.</li>
+                        <li>Mantén el aire contando hasta 2.</li>
+                        <li>Exhala lentamente por la boca contando hasta 6.</li>
+                        <li>Repite 10 veces.</li>
+                    </ol>
+                    <p class="pausa-benefit">Beneficio: Reduce el estrés, oxigena el cerebro y mejora la concentración.</p>
+                </div>
+            </div>
+            
+            <div class="pausa-card">
+                <div class="pausa-icon">
+                    <i class="fas fa-child"></i>
+                </div>
+                <div class="pausa-content">
+                    <h3 class="pausa-title">Estiramiento de espalda</h3>
+                    <ol class="pausa-steps">
+                        <li>De pie, separa ligeramente las piernas.</li>
+                        <li>Estira los brazos hacia arriba.</li>
+                        <li>Inclínate suavemente hacia los lados.</li>
+                        <li>Mantén 5 segundos cada posición.</li>
+                        <li>Repite 3 veces por cada lado.</li>
+                    </ol>
+                    <p class="pausa-benefit">Beneficio: Alivia la tensión acumulada en la espalda y mejora la postura.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Notificación (inicialmente oculta) -->
+        <div class="notification" id="notification">
+            <div class="notification-header">
+                <span class="notification-title">¡Hora de una pausa activa!</span>
+                <button class="notification-close" id="notification-close">&times;</button>
+            </div>
+            <div class="notification-message">
+                Toma 5 minutos para realizar alguno de los ejercicios recomendados y mejorar tu bienestar.
+            </div>
+            <div class="notification-actions">
+                <button class="notification-btn notification-snooze" id="notification-snooze">Más tarde</button>
+                <button class="notification-btn notification-ok" id="notification-ok">¡Vamos!</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bienestar Laboral NOM-035. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCd7FR-qaW7WleFP1kF2rQGYk9qvON51Ss",
+            authDomain: "bienestar-activo-69187.firebaseapp.com",
+            projectId: "bienestar-activo-69187",
+            storageBucket: "bienestar-activo-69187.firebasestorage.app",
+            messagingSenderId: "171149238020",
+            appId: "1:171149238020:web:33b5225103677c55203a51"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Referencias a elementos del DOM
+        const userNameElement = document.getElementById('user-name');
+        const logoutButton = document.getElementById('logout-btn');
+        const timerDisplay = document.getElementById('timer-display');
+        const startTimerButton = document.getElementById('start-timer');
+        const resetTimerButton = document.getElementById('reset-timer');
+        const notificationToggle = document.getElementById('notification-toggle');
+        const notification = document.getElementById('notification');
+        const notificationClose = document.getElementById('notification-close');
+        const notificationSnooze = document.getElementById('notification-snooze');
+        const notificationOk = document.getElementById('notification-ok');
+
+        // Verificar estado de autenticación
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuario autenticado
+                userNameElement.textContent = `Hola, ${user.email}`;
+            } else {
+                // Usuario no autenticado, redirigir a página de autenticación
+                window.location.href = 'auth.html';
+            }
+        });
+
+        // Función de cierre de sesión
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // Redirigir a página de autenticación después de cerrar sesión
+                window.location.href = 'auth.html';
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+                alert("Error al cerrar sesión. Por favor, intenta de nuevo.");
+            }
+        });
+
+        // Variables del temporizador
+        let timerInterval;
+        let timeLeft = 90 * 60; // 90 minutos en segundos
+        let timerRunning = false;
+        let notificationsEnabled = true;
+
+        // Formato del tiempo (HH:MM:SS)
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            
+            return [
+                hours.toString().padStart(2, '0'),
+                minutes.toString().padStart(2, '0'),
+                secs.toString().padStart(2, '0')
+            ].join(':');
+        }
+
+        // Actualizar visualización del temporizador
+        function updateTimerDisplay() {
+            timerDisplay.textContent = formatTime(timeLeft);
+        }
+
+        // Iniciar el temporizador
+        startTimerButton.addEventListener('click', () => {
+            if (!timerRunning) {
+                timerRunning = true;
+                startTimerButton.textContent = 'Pausar';
+                resetTimerButton.disabled = false;
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        // Tiempo completado, mostrar notificación
+                        clearInterval(timerInterval);
+                        timerRunning = false;
+                        startTimerButton.textContent = 'Iniciar';
+                        timeLeft = 90 * 60; // Reiniciar a 90 minutos
+                        updateTimerDisplay();
+                        
+                        if (notificationsEnabled) {
+                            showNotification();
+                        }
+                    }
+                }, 1000);
+            } else {
+                // Pausar el temporizador
+                clearInterval(timerInterval);
+                timerRunning = false;
+                startTimerButton.textContent = 'Reanudar';
+            }
+        });
+
+        // Reiniciar el temporizador
+        resetTimerButton.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            timeLeft = 90 * 60; // Reiniciar a 90 minutos
+            updateTimerDisplay();
+            startTimerButton.textContent = 'Iniciar';
+            resetTimerButton.disabled = true;
+        });
+
+        // Cambiar estado de notificaciones
+        notificationToggle.addEventListener('change', () => {
+            notificationsEnabled = notificationToggle.checked;
+        });
+
+        // Mostrar notificación
+        function showNotification() {
+            notification.style.display = 'block';
+            
+            // Reproducir sonido de notificación si está disponible
+            try {
+                const audio = new Audio('https://cdn.freesound.org/previews/414/414360_5121236-lq.mp3');
+                audio.play();
+            } catch (error) {
+                console.error("Error al reproducir sonido:", error);
+            }
+        }
+
+        // Cerrar notificación
+        notificationClose.addEventListener('click', () => {
+            notification.style.display = 'none';
+        });
+
+        // Posponer notificación
+        notificationSnooze.addEventListener('click', () => {
+            notification.style.display = 'none';
+            
+            // Configurar temporizador para 10 minutos
+            timeLeft = 10 * 60;
+            updateTimerDisplay();
+            
+            // Iniciar automáticamente
+            if (!timerRunning) {
+                startTimerButton.click();
+            }
+        });
+
+        // Aceptar notificación
+        notificationOk.addEventListener('click', () => {
+            notification.style.display = 'none';
+            
+            // Reiniciar temporizador para la próxima pausa
+            timeLeft = 90 * 60;
+            updateTimerDisplay();
+            
+            // Iniciar automáticamente
+            if (!timerRunning) {
+                startTimerButton.click();
+            }
+        });
+
+        // Actualizar visualización inicial
+        updateTimerDisplay();
+
+        // Configurar recordatorio automático cada 90 minutos si las notificaciones están habilitadas
+        if (notificationsEnabled) {
+            // Iniciar temporizador automáticamente al cargar la página
+            setTimeout(() => {
+                if (!timerRunning && notificationsEnabled) {
+                    startTimerButton.click();
+                }
+            }, 2000); // Pequeño retraso para asegurar que la página esté completamente cargada
+        }
+
+        // Prevenir que las notificaciones se pierdan si la pestaña está inactiva
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && timeLeft <= 0 && notificationsEnabled) {
+                showNotification();
+            }
+        });
+    </script>
+</body>
+</html>
