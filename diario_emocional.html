@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienestar Laboral NOM-035 - Diario Emocional</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos del encabezado */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            margin-right: 15px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: white;
+            color: #4CAF50;
+        }
+
+        /* Estilos de la navegación */
+        nav {
+            background-color: #333;
+            margin-bottom: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            overflow-x: auto;
+        }
+
+        .nav-links li {
+            flex: 0 0 auto;
+        }
+
+        .nav-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 1rem;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #4CAF50;
+        }
+
+        .nav-links i {
+            margin-right: 8px;
+        }
+
+        /* Estilos del contenido principal */
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            text-align: center;
+        }
+
+        /* Estilos del diario emocional */
+        .diario-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .registro-section, .grafica-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Estilos del selector de fecha */
+        .date-selector {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .date-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            max-width: 200px;
+        }
+
+        /* Estilos de los emojis */
+        .emoji-selector {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+        }
+
+        .emoji-option {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+            opacity: 0.5;
+        }
+
+        .emoji-option:hover {
+            transform: scale(1.1);
+        }
+
+        .emoji-option.selected {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .emoji-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .emoji-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Estilos del campo de notas */
+        .notes-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Estilos del botón de guardado */
+        .save-btn {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 0 auto;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .save-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilos del mensaje de confirmación */
+        .confirmation-message {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #dff0d8;
+            border-left: 4px solid #5cb85c;
+            text-align: center;
+        }
+
+        /* Estilos de la gráfica */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Estilos de la leyenda de la gráfica */
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        /* Estilos para el historial reciente */
+        .historial-reciente {
+            margin-top: 2rem;
+        }
+
+        .historial-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .historial-list {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 0.5rem;
+        }
+
+        .historial-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .historial-item:last-child {
+            border-bottom: none;
+        }
+
+        .historial-emoji {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .historial-fecha {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .historial-vacio {
+            padding: 1rem;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Estilos responsive */
+        @media (max-width: 768px) {
+            .diario-content {
+                grid-template-columns: 1fr;
+            }
+
+            .registro-section {
+                order: 1;
+            }
+
+            .grafica-section {
+                order: 2;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                margin-top: 1rem;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .emoji-selector {
+                flex-wrap: wrap;
+            }
+
+            .emoji-option {
+                flex: 0 0 33.33%;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Bienestar Laboral NOM-035</h1>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name">Cargando...</span>
+                    <button class="logout-btn" id="logout-btn">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i>Inicio</a></li>
+                <li><a href="test_nom035.html"><i class="fas fa-clipboard-check"></i>Test NOM-035</a></li>
+                <li><a href="pausas_activas.html"><i class="fas fa-dumbbell"></i>Pausas Activas</a></li>
+                <li><a href="diario_emocional.html" class="active"><i class="fas fa-book"></i>Diario Emocional</a></li>
+                <li><a href="consejos_breves.html"><i class="fas fa-lightbulb"></i>Consejos Breves</a></li>
+                <li><a href="checklist_nom035.html"><i class="fas fa-tasks"></i>Checklist Semanal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <h1 class="page-title">Diario Emocional</h1>
+        <p class="intro-text">Registra tu estado emocional diario para hacer seguimiento de tu bienestar y detectar patrones que te ayuden a mejorar tu salud mental en el entorno laboral.</p>
+        
+        <div class="diario-content">
+            <!-- Sección de registro de estado emocional -->
+            <section class="registro-section">
+                <h2 class="section-title">¿Cómo te sientes hoy?</h2>
+                
+                <div class="date-selector">
+                    <input type="date" id="entry-date" class="date-input">
+                </div>
+                
+                <div class="emoji-selector">
+                    <div class="emoji-option" data-value="3" id="emoji-feliz">
+                        <span class="emoji-icon">😊</span>
+                        <span class="emoji-label">Bien</span>
+                    </div>
+                    <div class="emoji-option" data-value="2" id="emoji-neutral">
+                        <span class="emoji-icon">😐</span>
+                        <span class="emoji-label">Regular</span>
+                    </div>
+                    <div class="emoji-option" data-value="1" id="emoji-triste">
+                        <span class="emoji-icon">😟</span>
+                        <span class="emoji-label">Mal</span>
+                    </div>
+                </div>
+                
+                <div class="notes-field">
+                    <label for="entry-notes">Notas (opcional):</label>
+                    <textarea id="entry-notes" class="notes-textarea" placeholder="¿Hay algo específico que quieras anotar sobre cómo te sientes hoy?"></textarea>
+                </div>
+                
+                <button class="save-btn" id="save-btn">Guardar registro</button>
+                
+                <div class="confirmation-message" id="confirmation-message">
+                    ¡Registro guardado correctamente!
+                </div>
+            </section>
+            
+            <!-- Sección de gráfica y historial -->
+            <section class="grafica-section">
+                <h2 class="section-title">Análisis Semanal</h2>
+                
+                <div class="chart-container">
+                    <canvas id="emotions-chart"></canvas>
+                </div>
+                
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #4CAF50;"></div>
+                        <span>Bien</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #FFC107;"></div>
+                        <span>Regular</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #F44336;"></div>
+                        <span>Mal</span>
+                    </div>
+                </div>
+                
+                <div class="historial-reciente">
+                    <h3 class="historial-title">Historial Reciente</h3>
+                    <ul class="historial-list" id="historial-list">
+                        <li class="historial-vacio">Cargando registros...</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bienestar Laboral NOM-035. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCd7FR-qaW7WleFP1kF2rQGYk9qvON51Ss",
+            authDomain: "bienestar-activo-69187.firebaseapp.com",
+            projectId: "bienestar-activo-69187",
+            storageBucket: "bienestar-activo-69187.firebasestorage.app",
+            messagingSenderId: "171149238020",
+            appId: "1:171149238020:web:33b5225103677c55203a51"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Referencias a elementos del DOM
+        const userNameElement = document.getElementById('user-name');
+        const logoutButton = document.getElementById('logout-btn');
+        const dateInput = document.getElementById('entry-date');
+        const emojiOptions = document.querySelectorAll('.emoji-option');
+        const notesTextarea = document.getElementById('entry-notes');
+        const saveButton = document.getElementById('save-btn');
+        const confirmationMessage = document.getElementById('confirmation-message');
+        const historialList = document.getElementById('historial-list');
+        const emotionsChart = document.getElementById('emotions-chart');
+
+        // Variables de estado
+        let selectedEmoji = null;
+        let chart = null;
+
+        // Establecer fecha actual en el selector de fecha
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        dateInput.value = formattedDate;
+        dateInput.max = formattedDate; // No permitir fechas futuras
+
+        // Verificar estado de autenticación
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuario autenticado
+                userNameElement.textContent = `Hola, ${user.email}`;
+                
+                // Cargar datos del usuario
+                loadUserData(user.uid);
+            } else {
+                // Usuario no autenticado, redirigir a página de autenticación
+                window.location.href = 'auth.html';
+            }
+        });
+
+        // Función de cierre de sesión
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // Redirigir a página de autenticación después de cerrar sesión
+                window.location.href = 'auth.html';
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+                alert("Error al cerrar sesión. Por favor, intenta de nuevo.");
+            }
+        });
+
+        // Selección de emoji
+        emojiOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Eliminar selección previa
+                emojiOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Seleccionar el emoji actual
+                option.classList.add('selected');
+                selectedEmoji = option.getAttribute('data-value');
+            });
+        });
+
+        // Guardar registro de estado emocional
+        saveButton.addEventListener('click', async () => {
+            if (!selectedEmoji) {
+                alert('Por favor, selecciona cómo te sientes hoy.');
+                return;
+            }
+            
+            const user = auth.currentUser;
+            
+            if (user) {
+                try {
+                    const entryDate = dateInput.value;
+                    const notes = notesTextarea.value.trim();
+                    
+                    // Guardar en Firestore
+                    await addDoc(collection(db, "diario_emocional"), {
+                        userId: user.uid,
+                        fecha: entryDate,
+                        estado: parseInt(selectedEmoji),
+                        notas: notes,
+                        timestamp: serverTimestamp()
+                    });
+                    
+                    // Mostrar mensaje de confirmación
+                    confirmationMessage.style.display = 'block';
+                    
+                    // Ocultar mensaje después de 3 segundos
+                    setTimeout(() => {
+                        confirmationMessage.style.display = 'none';
+                    }, 3000);
+                    
+                    // Limpiar formulario
+                    emojiOptions.forEach(opt => opt.classList.remove('selected'));
+                    selectedEmoji = null;
+                    notesTextarea.value = '';
+                    
+                    // Recargar datos
+                    loadUserData(user.uid);
+                } catch (error) {
+                    console.error("Error al guardar registro:", error);
+                    alert("Error al guardar el registro. Por favor, intenta de nuevo.");
+                }
+            }
+        });
+
+        // Cargar datos del usuario
+        async function loadUserData(userId) {
+            try {
+                // Obtener últimos 7 días para la gráfica
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6); // 7 días incluyendo hoy
+                
+                const formattedSevenDaysAgo = sevenDaysAgo.toISOString().split('T')[0];
+                
+                // Consultar registros de los últimos 7 días
+                const q = query(
+                    collection(db, "diario_emocional"),
+                    where("userId", "==", userId),
+                    where("fecha", ">=", formattedSevenDaysAgo),
+                    orderBy("fecha", "asc")
+                );
+                
+                const querySnapshot = await getDocs(q);
+                
+                // Preparar datos para la gráfica
+                const dateLabels = [];
+                const emotionData = [];
+                
+                // Generar etiquetas para los últimos 7 días
+                for (let i = 0; i < 7; i++) {
+                    const date = new Date(sevenDaysAgo);
+                    date.setDate(date.getDate() + i);
+                    
+                    const formattedDate = date.toISOString().split('T')[0];
+                    dateLabels.push(formatDate(formattedDate));
+                    emotionData.push(null); // Inicialmente sin datos
+                }
+                
+                // Llenar con datos existentes
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const date = data.fecha;
+                    const dateIndex = dateLabels.findIndex(label => {
+                        const originalDate = reverseFormatDate(label);
+                        return originalDate === date;
+                    });
+                    
+                    if (dateIndex !== -1) {
+                        emotionData[dateIndex] = data.estado;
+                    }
+                });
+                
+                // Crear/actualizar gráfica
+                createOrUpdateChart(dateLabels, emotionData);
+                
+                // Cargar historial reciente
+                loadRecentHistory(userId);
+            } catch (error) {
+                console.error("Error al cargar datos:", error);
+            }
+        }
+
+        // Cargar historial reciente
+        async function loadRecentHistory(userId) {
+            try {
+                // Consultar los últimos 10 registros
+                const q = query(
+                    collection(db, "diario_emocional"),
+                    where("userId", "==", userId),
+                    orderBy("timestamp", "desc"),
+                    limit(10)
+                );
+                
+                const querySnapshot = await getDocs(q);
+                
+                // Limpiar lista actual
+                historialList.innerHTML = '';
+                
+                if (querySnapshot.empty) {
+                    historialList.innerHTML = '<li class="historial-vacio">No hay registros todavía.</li>';
+                    return;
+                }
+                
+                // Mostrar registros
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const item = document.createElement('li');
+                    item.className = 'historial-item';
+                    
+                    let emoji = '';
+                    switch (data.estado) {
+                        case 3:
+                            emoji = '😊';
+                            break;
+                        case 2:
+                            emoji = '😐';
+                            break;
+                        case 1:
+                            emoji = '😟';
+                            break;
+                    }
+                    
+                    item.innerHTML = `
+                        <span class="historial-emoji">${emoji}</span>
+                        <span class="historial-fecha">${formatDate(data.fecha)}</span>
+                    `;
+                    
+                    historialList.appendChild(item);
+                });
+            } catch (error) {
+                console.error("Error al cargar historial:", error);
+                historialList.innerHTML = '<li class="historial-vacio">Error al cargar registros.</li>';
+            }
+        }
+
+        // Crear o actualizar gráfica
+        function createOrUpdateChart(labels, data) {
+            // Destruir gráfica existente si hay una
+            if (chart) {
+                chart.destroy();
+            }
+            
+            // Crear nueva gráfica
+            chart = new Chart(emotionsChart, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Estado emocional',
+                        data: data,
+                        backgroundColor: function(context) {
+                            const value = context.dataset.data[context.dataIndex];
+                            if (value === 3) return '#4CAF50';
+                            if (value === 2) return '#FFC107';
+                            if (value === 1) return '#F44336';
+                            return 'rgba(0, 0, 0, 0.1)';
+                        },
+                        borderColor: function(context) {
+                            const value = context.dataset.data[context.dataIndex];
+                            if (value === 3) return '#4CAF50';
+                            if (value === 2) return '#FFC107';
+                            if (value === 1) return '#F44336';
+                            return 'rgba(0, 0, 0, 0.1)';
+                        },
+                        borderWidth: 2,
+                        tension: 0.1,
+                        pointStyle: 'circle',
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 3,
+                            ticks: {
+                                stepSize: 1,
+                                callback: function(value) {
+                                    if (value === 1) return 'Mal';
+                                    if (value === 2) return 'Regular';
+                                    if (value === 3) return 'Bien';
+                                    return '';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.parsed.y;
+                                    if (value === 3) return 'Bien';
+                                    if (value === 2) return 'Regular';
+                                    if (value === 1) return 'Mal';
+                                    return 'Sin datos';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Función para formatear fecha
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            
+            return `${day}/${month}`;
+        }
+
+        // Función para invertir el formato de fecha
+        function reverseFormatDate(shortDate) {
+            const [day, month] = shortDate.split('/').map(Number);
+            const today = new Date();
+            const year = today.getFullYear();
+            
+            return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        }
+    </script>
+</body>
+</html>
