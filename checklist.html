@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienestar Laboral NOM-035 - Checklist Semanal</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos del encabezado */
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-name {
+            margin-right: 15px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: white;
+            color: #4CAF50;
+        }
+
+        /* Estilos de la navegación */
+        nav {
+            background-color: #333;
+            margin-bottom: 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            overflow-x: auto;
+        }
+
+        .nav-links li {
+            flex: 0 0 auto;
+        }
+
+        .nav-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 1rem;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #4CAF50;
+        }
+
+        .nav-links i {
+            margin-right: 8px;
+        }
+
+        /* Estilos del contenido principal */
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #4CAF50;
+            text-align: center;
+        }
+
+        .intro-text {
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+            text-align: center;
+        }
+
+        /* Estilos del selector de semana */
+        .week-selector {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .week-label {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .week-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            max-width: 200px;
+        }
+
+        /* Estilos del checklist */
+        .checklist-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .checklist-form {
+            margin-bottom: 1.5rem;
+        }
+
+        .checklist-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-checkbox {
+            margin-right: 10px;
+            margin-top: 6px;
+            transform: scale(1.2);
+        }
+
+        .item-question {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .item-description {
+            margin-left: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Estilos de los botones */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        .btn-secondary {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Estilos del historial de checklists */
+        .historial-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .historial-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .historial-list {
+            list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+
+        .historial-item {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .historial-item:last-child {
+            border-bottom: none;
+        }
+
+        .historial-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .historial-fecha {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .historial-summary {
+            display: flex;
+            align-items: center;
+        }
+
+        .historial-progress {
+            flex: 1;
+            height: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin-right: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #4CAF50;
+        }
+
+        .historial-percentage {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Estilos del mensaje de confirmación */
+        .confirmation-message {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #dff0d8;
+            border-left: 4px solid #5cb85c;
+            text-align: center;
+        }
+
+        /* Estilos responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                margin-top: 1rem;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Bienestar Laboral NOM-035</h1>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="user-name">Cargando...</span>
+                    <button class="logout-btn" id="logout-btn">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-home"></i>Inicio</a></li>
+                <li><a href="test_nom035.html"><i class="fas fa-clipboard-check"></i>Test NOM-035</a></li>
+                <li><a href="pausas_activas.html"><i class="fas fa-dumbbell"></i>Pausas Activas</a></li>
+                <li><a href="diario_emocional.html"><i class="fas fa-book"></i>Diario Emocional</a></li>
+                <li><a href="consejos_breves.html"><i class="fas fa-lightbulb"></i>Consejos Breves</a></li>
+                <li><a href="checklist_nom035.html" class="active"><i class="fas fa-tasks"></i>Checklist Semanal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="container">
+        <h1 class="page-title">Checklist Semanal NOM-035</h1>
+        <p class="intro-text">Realiza esta verificación semanal para identificar y prevenir factores de riesgo psicosocial en tu entorno laboral, cumpliendo con los requisitos de la NOM-035-STPS-2018.</p>
+        
+        <!-- Selector de semana -->
+        <div class="week-selector">
+            <label class="week-label" for="week-input">Selecciona la semana:</label>
+            <input type="week" id="week-input" class="week-input">
+        </div>
+        
+        <!-- Checklist -->
+        <div class="checklist-container">
+            <form id="checklist-form" class="checklist-form">
+                <div class="checklist-item">
+                    <div class="item-header">
+                        <input type="checkbox" id="item1" class="item-checkbox" name="item1">
+                        <label for="item1" class="item-question">¿Tu carga de trabajo esta semana fue adecuada y manejable?</label>
+                    </div>
+                    <p class="item-description">Se refiere a que las exigencias laborales te permitieron cumplir con tus tareas sin excesiva presión o estrés.</p>
+                </div>
+                
+                <div class="checklist-item">
+                    <div class="item-header">
+                        <input type="checkbox" id="item2" class="item-checkbox" name="item2">
+                        <label for="item2" class="item-question">¿Tuviste control sobre tu trabajo y la forma de realizarlo?</label>
+                    </div>
+                    <p class="item-description">Implica autonomía para decidir sobre aspectos relacionados con tu tarea, método de trabajo y ritmo.</p>
+                </div>
+                
+                <div class="checklist-item">
+                    <div class="item-header">
+                        <input type="checkbox" id="item3" class="item-checkbox" name="item3">
+                        <label for="item3" class="item-question">¿Recibiste apoyo social de jefes y compañeros cuando lo necesitaste?</label>
+                    </div>
+                    <p class="item-description">Se refiere al soporte, orientación y retroalimentación recibida por parte de supervisores y colegas.</p>
+                </div>
+                
+                <div class="checklist-item">
+                    <div class="item-header">
+                        <input type="checkbox" id="item4" class="item-checkbox" name="item4">
+                        <label for="item4" class="item-question">¿Tuviste un equilibrio satisfactorio entre tu vida laboral y personal?</label>
+                    </div>
+                    <p class="item-description">Implica la capacidad de atender tus responsabilidades laborales sin descuidar tu vida familiar y personal.</p>
+                </div>
+                
+                <div class="checklist-item">
+                    <div class="item-header">
+                        <input type="checkbox" id="item5" class="item-checkbox" name="item5">
+                        <label for="item5" class="item-question">¿Tu ambiente físico de trabajo fue adecuado y seguro?</label>
+                    </div>
+                    <p class="item-description">Incluye factores como iluminación, ruido, temperatura, espacio y herramientas adecuadas.</p>
+                </div>
+                
+                <div class="checklist-item">
+                    <div class="item-header">
+                        <input type="checkbox" id="item6" class="item-checkbox" name="item6">
+                        <label for="item6" class="item-question">¿La comunicación en tu equipo y organización fue clara y efectiva?</label>
+                    </div>
+                    <p class="item-description">Se refiere a la calidad de los canales de comunicación y la claridad de las instrucciones recibidas.</p>
+                </div>
+                
+                <div class="checklist-item">
+                    <div class="item-header">
+                        <input type="checkbox" id="item7" class="item-checkbox" name="item7">
+                        <label for="item7" class="item-question">¿Experimentaste un ambiente libre de violencia, acoso o discriminación?</label>
+                    </div>
+                    <p class="item-description">Implica la ausencia de conductas negativas como agresiones, intimidación, exclusión o trato desigual.</p>
+                </div>
+                
+                <div class="checklist-item">
+                    <div class="item-header">
+                        <input type="checkbox" id="item8" class="item-checkbox" name="item8">
+                        <label for="item8" class="item-question">¿Pudiste utilizar y desarrollar tus habilidades en el trabajo?</label>
+                    </div>
+                    <p class="item-description">Se refiere a la oportunidad de aplicar tus conocimientos y aprender cosas nuevas.</p>
+                </div>
+                
+                <div class="checklist-item">
+                    <div class="item-header">
+                        <input type="checkbox" id="item9" class="item-checkbox" name="item9">
+                        <label for="item9" class="item-question">¿Tuviste claridad sobre tus responsabilidades y lo que se espera de ti?</label>
+                    </div>
+                    <p class="item-description">Implica tener definidas tus funciones, objetivos y criterios de evaluación.</p>
+                </div>
+                
+                <div class="checklist-item">
+                    <div class="item-header">
+                        <input type="checkbox" id="item10" class="item-checkbox" name="item10">
+                        <label for="item10" class="item-question">¿Implementaste al menos una pausa activa diaria durante la semana?</label>
+                    </div>
+                    <p class="item-description">Se refiere a tomar breves descansos para realizar estiramientos o ejercicios que alivien la tensión.</p>
+                </div>
+            </form>
+            
+            <div class="button-group">
+                <button id="save-btn" class="btn btn-primary">Guardar Checklist</button>
+                <button id="reset-btn" class="btn btn-secondary">Limpiar Formulario</button>
+            </div>
+            
+            <div id="confirmation-message" class="confirmation-message">
+                ¡Checklist guardado correctamente!
+            </div>
+        </div>
+        
+        <!-- Historial de checklists -->
+        <div class="historial-container">
+            <h2 class="historial-title">Historial de Checklists</h2>
+            <ul id="historial-list" class="historial-list">
+                <li class="historial-item">
+                    <div class="historial-fecha">Cargando historial...</div>
+                </li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bienestar Laboral NOM-035. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCd7FR-qaW7WleFP1kF2rQGYk9qvON51Ss",
+            authDomain: "bienestar-activo-69187.firebaseapp.com",
+            projectId: "bienestar-activo-69187",
+            storageBucket: "bienestar-activo-69187.firebasestorage.app",
+            messagingSenderId: "171149238020",
+            appId: "1:171149238020:web:33b5225103677c55203a51"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Referencias a elementos del DOM
+        const userNameElement = document.getElementById('user-name');
+        const logoutButton = document.getElementById('logout-btn');
+        const weekInput = document.getElementById('week-input');
+        const checklistForm = document.getElementById('checklist-form');
+        const saveButton = document.getElementById('save-btn');
+        const resetButton = document.getElementById('reset-btn');
+        const confirmationMessage = document.getElementById('confirmation-message');
+        const historialList = document.getElementById('historial-list');
+
+        // Establecer semana actual en el selector
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentWeek = getWeekNumber(currentDate);
+        weekInput.value = `${currentYear}-W${currentWeek.toString().padStart(2, '0')}`;
+
+        // Verificar estado de autenticación
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Usuario autenticado
+                userNameElement.textContent = `Hola, ${user.email}`;
+                
+                // Cargar historial de checklists
+                loadChecklistHistory(user.uid);
+            } else {
+                // Usuario no autenticado, redirigir a página de autenticación
+                window.location.href = 'auth.html';
+            }
+        });
+
+        // Función de cierre de sesión
+        logoutButton.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                // Redirigir a página de autenticación después de cerrar sesión
+                window.location.href = 'auth.html';
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+                alert("Error al cerrar sesión. Por favor, intenta de nuevo.");
+            }
+        });
+
+        // Guardar checklist
+        saveButton.addEventListener('click', async () => {
+            const user = auth.currentUser;
+            
+            if (!user) {
+                alert('Debes iniciar sesión para guardar el checklist.');
+                return;
+            }
+            
+            const selectedWeek = weekInput.value;
+            
+            if (!selectedWeek) {
+                alert('Por favor, selecciona una semana para el checklist.');
+                return;
+            }
+            
+            // Obtener respuestas del formulario
+            const checklistItems = {};
+            let countChecked = 0;
+            
+            for (let i = 1; i <= 10; i++) {
+                const checkbox = document.getElementById(`item${i}`);
+                checklistItems[`item${i}`] = checkbox.checked;
+                
+                if (checkbox.checked) {
+                    countChecked++;
+                }
+            }
+            
+            // Calcular porcentaje de cumplimiento
+            const percentageCompleted = (countChecked / 10) * 100;
+            
+            try {
+                // Guardar en Firestore
+                await addDoc(collection(db, "checklist_nom035"), {
+                    userId: user.uid,
+                    userEmail: user.email,
+                    semana: selectedWeek,
+                    respuestas: checklistItems,
+                    porcentajeCumplimiento: percentageCompleted,
+                    timestamp: serverTimestamp()
+                });
+                
+                // Mostrar mensaje de confirmación
+                confirmationMessage.style.display = 'block';
+                
+                // Ocultar mensaje después de 3 segundos
+                setTimeout(() => {
+                    confirmationMessage.style.display = 'none';
+                }, 3000);
+                
+                // Recargar historial
+                loadChecklistHistory(user.uid);
+            } catch (error) {
+                console.error("Error al guardar checklist:", error);
+                alert("Error al guardar el checklist. Por favor, intenta de nuevo.");
+            }
+        });
+
+        // Limpiar formulario
+        resetButton.addEventListener('click', () => {
+            checklistForm.reset();
+        });
+
+        // Cargar historial de checklists
+        async function loadChecklistHistory(userId) {
+            try {
+                // Consultar checklists del usuario, ordenados por fecha
+                const q = query(
+                    collection(db, "checklist_nom035"),
+                    where("userId", "==", userId),
+                    orderBy("timestamp", "desc")
+                );
+                
+                const querySnapshot = await getDocs(q);
+                
+                // Limpiar lista actual
+                historialList.innerHTML = '';
+                
+                if (querySnapshot.empty) {
+                    historialList.innerHTML = `
+                        <li class="historial-item">
+                            <div class="historial-fecha">No hay registros todavía.</div>
+                        </li>
+                    `;
+                    return;
+                }
+                
+                // Mostrar historial
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const semana = formatWeek(data.semana);
+                    const porcentaje = data.porcentajeCumplimiento.toFixed(0);
+                    
+                    const historialItem = document.createElement('li');
+                    historialItem.className = 'historial-item';
+                    historialItem.dataset.docId = doc.id;
+                    
+                    historialItem.innerHTML = `
+                        <div class="historial-fecha">Semana: ${semana}</div>
+                        <div class="historial-summary">
+                            <div class="historial-progress">
+                                <div class="progress-bar" style="width: ${porcentaje}%"></div>
+                            </div>
+                            <div class="historial-percentage">${porcentaje}% de cumplimiento</div>
+                        </div>
+                    `;
+                    
+                    // Evento de clic para cargar el checklist
+                    historialItem.addEventListener('click', () => {
+                        loadChecklistDetails(data);
+                    });
+                    
+                    historialList.appendChild(historialItem);
+                });
+            } catch (error) {
+                console.error("Error al cargar historial:", error);
+                historialList.innerHTML = `
+                    <li class="historial-item">
+                        <div class="historial-fecha">Error al cargar historial.</div>
+                    </li>
+                `;
+            }
+        }
+
+        // Cargar detalles de un checklist específico
+        function loadChecklistDetails(checklistData) {
+            // Establecer la semana en el selector
+            weekInput.value = checklistData.semana;
+            
+            // Marcar las casillas según las respuestas guardadas
+            for (let i = 1; i <= 10; i++) {
+                const checkbox = document.getElementById(`item${i}`);
+                checkbox.checked = checklistData.respuestas[`item${i}`];
+            }
+            
+            // Desplazarse hacia el formulario
+            checklistForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Función para obtener el número de semana del año
+        function getWeekNumber(date) {
+            const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+            const pastDaysOfYear = (date - firstDayOfYear) / 86400000;
+            return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+        }
+
+        // Función para formatear la semana (YYYY-Wxx a "xx de [mes]")
+        function formatWeek(weekStr) {
+            const [year, weekPart] = weekStr.split('-');
+            const weekNum = parseInt(weekPart.substring(1));
+            
+            // Calcular fecha aproximada del primer día de la semana
+            const firstDayOfYear = new Date(parseInt(year), 0, 1);
+            const daysToAdd = (weekNum - 1) * 7 - firstDayOfYear.getDay();
+            const weekDate = new Date(parseInt(year), 0, 1 + daysToAdd);
+            
+            const months = [
+                'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+                'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+            ];
+            
+            return `${weekNum} de ${months[weekDate.getMonth()]} de ${year}`;
+        }
+    </script>
+</body>
+</html>
