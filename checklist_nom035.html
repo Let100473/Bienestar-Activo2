@@ -485,7 +485,7 @@
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
         import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -577,15 +577,23 @@
             const percentageCompleted = (countChecked / 10) * 100;
             
             try {
-                // Guardar en Firestore
-                await addDoc(collection(db, "checklist_nom035"), {
+                console.log("Guardando checklist para la semana:", selectedWeek);
+                
+                // Crear el objeto de datos que se va a guardar
+                const checklistData = {
                     userId: user.uid,
                     userEmail: user.email,
                     semana: selectedWeek,
                     respuestas: checklistItems,
                     porcentajeCumplimiento: percentageCompleted,
                     timestamp: serverTimestamp()
-                });
+                };
+                
+                console.log("Datos a guardar:", checklistData);
+                
+                // Guardar en Firestore
+                const docRef = await addDoc(collection(db, "checklist_nom035"), checklistData);
+                console.log("Checklist guardado con ID:", docRef.id);
                 
                 // Mostrar mensaje de confirmación
                 confirmationMessage.style.display = 'block';
@@ -596,9 +604,11 @@
                 }, 3000);
                 
                 // Recargar historial
+                console.log("Recargando historial después de guardar");
                 loadChecklistHistory(user.uid);
             } catch (error) {
                 console.error("Error al guardar checklist:", error);
+                console.log("Error completo:", JSON.stringify(error));
                 alert("Error al guardar el checklist. Por favor, intenta de nuevo.");
             }
         });
@@ -611,38 +621,23 @@
         // Cargar historial de checklists
         async function loadChecklistHistory(userId) {
             try {
-                // Primero intentamos crear la colección si no existe
-                try {
-                    // Consultar si hay al menos un documento en la colección
-                    const testQuery = query(
-                        collection(db, "checklist_nom035"),
-                        limit(1)
-                    );
-                    await getDocs(testQuery);
-                    // Si no da error, la colección existe
-                } catch (error) {
-                    console.log("Es posible que la colección no exista aún, esto es normal si es la primera vez.");
-                    // Mostrar mensaje de no hay registros
-                    historialList.innerHTML = `
-                        <li class="historial-item">
-                            <div class="historial-fecha">No hay registros todavía.</div>
-                        </li>
-                    `;
-                    return;
-                }
+                console.log("Cargando historial para el usuario:", userId);
                 
-                // Consultar checklists del usuario, ordenados por fecha
+                // Consultar checklists del usuario
                 const q = query(
                     collection(db, "checklist_nom035"),
                     where("userId", "==", userId)
                 );
                 
+                console.log("Ejecutando consulta...");
                 const querySnapshot = await getDocs(q);
+                console.log("Resultados obtenidos:", querySnapshot.size);
                 
                 // Limpiar lista actual
                 historialList.innerHTML = '';
                 
                 if (querySnapshot.empty) {
+                    console.log("No se encontraron registros");
                     historialList.innerHTML = `
                         <li class="historial-item">
                             <div class="historial-fecha">No hay registros todavía.</div>
@@ -651,13 +646,13 @@
                     return;
                 }
                 
-                // Array para almacenar documentos y ordenarlos manualmente
+                // Array para almacenar documentos
                 const documents = [];
                 
                 // Recopilar documentos
                 querySnapshot.forEach((doc) => {
+                    console.log("Documento encontrado:", doc.id);
                     const data = doc.data();
-                    // Añadir ID del documento a los datos
                     data.id = doc.id;
                     documents.push(data);
                 });
@@ -669,37 +664,43 @@
                     return timeB - timeA;
                 });
                 
+                console.log("Documentos ordenados:", documents.length);
+                
                 // Mostrar historial
                 documents.forEach((data) => {
-                    const semana = formatWeek(data.semana);
-                    const porcentaje = data.porcentajeCumplimiento.toFixed(0);
-                    
-                    const historialItem = document.createElement('li');
-                    historialItem.className = 'historial-item';
-                    
-                    historialItem.innerHTML = `
-                        <div class="historial-fecha">Semana: ${semana}</div>
-                        <div class="historial-summary">
-                            <div class="historial-progress">
-                                <div class="progress-bar" style="width: ${porcentaje}%"></div>
+                    try {
+                        const semana = formatWeek(data.semana);
+                        const porcentaje = data.porcentajeCumplimiento.toFixed(0);
+                        
+                        const historialItem = document.createElement('li');
+                        historialItem.className = 'historial-item';
+                        
+                        historialItem.innerHTML = `
+                            <div class="historial-fecha">Semana: ${semana}</div>
+                            <div class="historial-summary">
+                                <div class="historial-progress">
+                                    <div class="progress-bar" style="width: ${porcentaje}%"></div>
+                                </div>
+                                <div class="historial-percentage">${porcentaje}% de cumplimiento</div>
                             </div>
-                            <div class="historial-percentage">${porcentaje}% de cumplimiento</div>
-                        </div>
-                    `;
-                    
-                    // Evento de clic para cargar el checklist
-                    historialItem.addEventListener('click', () => {
-                        loadChecklistDetails(data);
-                    });
-                    
-                    historialList.appendChild(historialItem);
+                        `;
+                        
+                        // Evento de clic para cargar el checklist
+                        historialItem.addEventListener('click', () => {
+                            loadChecklistDetails(data);
+                        });
+                        
+                        historialList.appendChild(historialItem);
+                    } catch (error) {
+                        console.error("Error al procesar documento:", error);
+                    }
                 });
             } catch (error) {
                 console.error("Error al cargar historial:", error);
-                console.log(error); // Mostrar el error completo en la consola
+                console.log("Error completo:", JSON.stringify(error));
                 historialList.innerHTML = `
                     <li class="historial-item">
-                        <div class="historial-fecha">Error al cargar historial. Verifica la consola para más detalles.</div>
+                        <div class="historial-fecha">Error al cargar historial. Verifica la consola.</div>
                     </li>
                 `;
             }
@@ -707,17 +708,24 @@
 
         // Cargar detalles de un checklist específico
         function loadChecklistDetails(checklistData) {
-            // Establecer la semana en el selector
-            weekInput.value = checklistData.semana;
-            
-            // Marcar las casillas según las respuestas guardadas
-            for (let i = 1; i <= 10; i++) {
-                const checkbox = document.getElementById(`item${i}`);
-                checkbox.checked = checklistData.respuestas[`item${i}`];
+            try {
+                console.log("Cargando detalles del checklist:", checklistData.id);
+                
+                // Establecer la semana en el selector
+                weekInput.value = checklistData.semana;
+                
+                // Marcar las casillas según las respuestas guardadas
+                for (let i = 1; i <= 10; i++) {
+                    const checkbox = document.getElementById(`item${i}`);
+                    checkbox.checked = checklistData.respuestas[`item${i}`];
+                }
+                
+                // Desplazarse hacia el formulario
+                checklistForm.scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                console.error("Error al cargar detalles del checklist:", error);
+                alert("Error al cargar el checklist seleccionado.");
             }
-            
-            // Desplazarse hacia el formulario
-            checklistForm.scrollIntoView({ behavior: 'smooth' });
         }
 
         // Función para obtener el número de semana del año
