@@ -474,7 +474,7 @@
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
         import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -604,16 +604,6 @@
                 
                 const formattedSevenDaysAgo = sevenDaysAgo.toISOString().split('T')[0];
                 
-                // Consultar registros de los últimos 7 días
-                const q = query(
-                    collection(db, "diario_emocional"),
-                    where("userId", "==", userId),
-                    where("fecha", ">=", formattedSevenDaysAgo),
-                    orderBy("fecha", "asc")
-                );
-                
-                const querySnapshot = await getDocs(q);
-                
                 // Preparar datos para la gráfica
                 const dateLabels = [];
                 const emotionData = [];
@@ -628,54 +618,102 @@
                     emotionData.push(null); // Inicialmente sin datos
                 }
                 
-                // Llenar con datos existentes
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const date = data.fecha;
-                    const dateIndex = dateLabels.findIndex(label => {
-                        const originalDate = reverseFormatDate(label);
-                        return originalDate === date;
+                // Obtener todos los registros del usuario y filtrar por fecha manualmente
+                try {
+                    const q = query(
+                        collection(db, "diario_emocional"),
+                        where("userId", "==", userId)
+                    );
+                    
+                    const querySnapshot = await getDocs(q);
+                    
+                    // Procesar los resultados para llenar emotionData
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const date = data.fecha;
+                        
+                        // Verificar si la fecha está dentro del rango de 7 días
+                        if (date >= formattedSevenDaysAgo && date <= formattedDate) {
+                            const dateIndex = dateLabels.findIndex(label => {
+                                const originalDate = reverseFormatDate(label);
+                                return originalDate === date;
+                            });
+                            
+                            if (dateIndex !== -1) {
+                                emotionData[dateIndex] = data.estado;
+                            }
+                        }
                     });
                     
-                    if (dateIndex !== -1) {
-                        emotionData[dateIndex] = data.estado;
-                    }
-                });
+                    // Crear/actualizar gráfica
+                    createOrUpdateChart(dateLabels, emotionData);
+                    
+                    // Cargar historial reciente
+                    loadRecentHistory(userId, querySnapshot);
+                    
+                } catch (error) {
+                    console.error("Error al consultar registros:", error);
+                    throw error;
+                }
                 
-                // Crear/actualizar gráfica
-                createOrUpdateChart(dateLabels, emotionData);
-                
-                // Cargar historial reciente
-                loadRecentHistory(userId);
             } catch (error) {
                 console.error("Error al cargar datos:", error);
+                alert("Error al cargar datos: " + error.message);
             }
         }
 
         // Cargar historial reciente
-        async function loadRecentHistory(userId) {
+        async function loadRecentHistory(userId, existingSnapshot = null) {
             try {
-                // Consultar los últimos 10 registros
-                const q = query(
-                    collection(db, "diario_emocional"),
-                    where("userId", "==", userId),
-                    orderBy("timestamp", "desc"),
-                    limit(10)
-                );
-                
-                const querySnapshot = await getDocs(q);
-                
                 // Limpiar lista actual
                 historialList.innerHTML = '';
                 
-                if (querySnapshot.empty) {
+                let historyItems = [];
+                
+                if (existingSnapshot) {
+                    // Usar los datos que ya tenemos
+                    existingSnapshot.forEach((doc) => {
+                        historyItems.push(doc.data());
+                    });
+                } else {
+                    // Consultar los registros si no tenemos datos
+                    const q = query(
+                        collection(db, "diario_emocional"),
+                        where("userId", "==", userId)
+                    );
+                    
+                    const querySnapshot = await getDocs(q);
+                    
+                    if (querySnapshot.empty) {
+                        historialList.innerHTML = '<li class="historial-vacio">No hay registros todavía.</li>';
+                        return;
+                    }
+                    
+                    querySnapshot.forEach((doc) => {
+                        historyItems.push(doc.data());
+                    });
+                }
+                
+                if (historyItems.length === 0) {
                     historialList.innerHTML = '<li class="historial-vacio">No hay registros todavía.</li>';
                     return;
                 }
                 
+                // Ordenar por fecha (más reciente primero)
+                historyItems.sort((a, b) => {
+                    // Ordenar primero por timestamp si existe
+                    if (a.timestamp && b.timestamp) {
+                        return b.timestamp.seconds - a.timestamp.seconds;
+                    }
+                    // Si no hay timestamp, ordenar por fecha
+                    return new Date(b.fecha) - new Date(a.fecha);
+                });
+                
+                // Limitar a 10 items
+                historyItems = historyItems.slice(0, 10);
+                
                 // Mostrar registros
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
+                historyItems.forEach((data) => {
                     const item = document.createElement('li');
                     item.className = 'historial-item';
                     
